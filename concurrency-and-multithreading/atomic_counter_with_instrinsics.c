@@ -1,41 +1,61 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <stdatomic.h>
-#include <time.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<pthread.h>
+#include<time.h>
 
-#define NUM_THREADS 4
-#define NUM_INCREMENTS 1000000
+#define THREADS 8
+#define ITERATIONS 1000
 
-atomic_long counter = 0;
+static long atomic_counter = 0;
 
-void* worker(void* arg) {
-    for (long i = 0; i < NUM_INCREMENTS; i++) {
-        atomic_fetch_add(&counter, 1);
+typedef struct {
+    int id;
+    long iterations;
+}worker_arg_t;
+
+static void *worker_atomic(void *arg)
+{
+    worker_arg_t *worker = (worker_arg_t *)arg;
+
+    for (long iterator = 0; iterator < worker->iterations; ++iterator)
+    {
+        __atomic_fetch_add(&atomic_counter, 1, __ATOMIC_SEQ_CST);
     }
+
     return NULL;
 }
 
-int main() {
-    pthread_t threads[NUM_THREADS];
+int main(void)
+{
+    pthread_t threads[THREADS];
+    worker_arg_t args[THREADS];
+
     struct timespec start, end;
     clock_gettime(CLOCK_MONOTONIC, &start);
-    for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_create(&threads[i], NULL, worker, NULL);
-    }
-    for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_join(threads[i], NULL);
-    }
-    clock_gettime(CLOCK_MONOTONIC, &end);
-    long seconds = end.tv_sec - start.tv_sec;
-    long nanoseconds = end.tv_nsec - start.tv_nsec;
-    if (nanoseconds < 0) {
-        seconds -= 1;
-        nanoseconds += 1000000000;
+
+    for (int iterator = 0; iterator < THREADS; ++iterator)
+    {
+        args[iterator].id = iterator;
+        args[iterator].iterations = ITERATIONS;
+
+        if(pthread_create(&threads[iterator], NULL, worker_atomic, &args[iterator]) != 0)
+        {
+            perror("pthread_create");
+            exit(EXIT_FAILURE);
+        }
     }
 
-    printf("Final counter = %ld\n", counter);
-    printf("Time taken = %ld.%09ld seconds\n", seconds, nanoseconds);
+    for (int iterator = 0; iterator < THREADS; ++iterator)
+    {
+        pthread_join(threads[iterator], NULL);
+    }
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+
+    double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+
+    printf("atomic_counter = %ld (expected = %ld) \n", atomic_counter, (long)THREADS * ITERATIONS);
+    printf("time = %.6fs \n", elapsed);
 
     return 0;
 }
