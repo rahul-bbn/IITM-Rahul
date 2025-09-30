@@ -24,14 +24,12 @@ static void die(const char *message)
 }
 
 int main() {
-    if (access(FTOK_PATH, F_OK) != 0) {
-        FILE *f = fopen(FTOK_PATH, "ab");
-        if (!f)
-        {
-            die("fopen");
-        }
-        fclose(f);
+    FILE *f = fopen(FTOK_PATH, "ab");
+    if (!f)
+    {
+        die("fopen");
     }
+    fclose(f);
 
     key_t key = ftok(FTOK_PATH, FTOK_PROJID);
     if (key == (key_t)-1)
@@ -61,10 +59,7 @@ int main() {
     // Fork workers
     for (int i = 0; i < MAX_WORKERS; i++) {
         pid_t pid = fork();
-        if (pid < 0)
-        {
-            die("fork");
-        }
+        if (pid < 0) die("fork");
         if (pid == 0) {
             // Child → worker process
             for (int j = 0; j < 1000; j++) {
