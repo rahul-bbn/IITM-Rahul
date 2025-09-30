@@ -61,7 +61,10 @@ int main() {
     // Fork workers
     for (int i = 0; i < MAX_WORKERS; i++) {
         pid_t pid = fork();
-        if (pid < 0) die("fork");
+        if (pid < 0)
+        {
+            die("fork");
+        }
         if (pid == 0) {
             // Child → worker process
             for (int j = 0; j < 1000; j++) {
