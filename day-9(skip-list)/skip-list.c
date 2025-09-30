@@ -1,288 +1,203 @@
-// #include<stdio.h>
-// #include<stdlib.h>
-// #include<time.h>
-// #define MAX_LEVEL 6
-// #define P_FACTOR 0.5
-// int i;
-
-// typedef struct skipListNode{
-//     int key;
-//     struct skipListNode **forward;
-// }skipListNode;
-
-// typedef struct skipList{
-//     int level;
-//     skipListNode* header;
-// }skipList;
-
-// //create Node
-// skipListNode* createNode(int key,int level){
-//     skipListNode* node=(skipListNode*)malloc(sizeof(skipListNode));
-//     node->key=key;
-//     node->forward=(skipListNode**)malloc(sizeof(skipListNode*)*(level+1));
-
-//     for (int  i = 0; i < level; i++)
-//     {
-//         node->forward[i]=NULL;
-//     }
-//     return node;
-// }
-
-// //create list
-// skipList* createSkipList(){
-//     skipList* list=(skipList*)malloc(sizeof(skipList));
-//     list->header=createNode(-1,MAX_LEVEL);
-
-//     return list;
-// }
-
-// //generate Random level
-// int geneateRandomLevel(){
-//     int level=0;
-//     srand(time(NULL));
-//     while ((rand()/(double)RAND_MAX) < P_FACTOR && level<MAX_LEVEL)
-//     {
-//         level++;
-//     }
-//     return level;
-// }
-
-// //search
-// skipListNode* search(skipList* list,int key){
-//     skipListNode* current=list->header;
-
-//     for (int  i = list->level; i >= 0; i--)
-//     {
-//        while (current->forward[i] && current->forward[i]->key < key)
-//        {
-//         current=current->forward[i];
-//        }
-//     }
-//     current=current->forward[i];
-//     if(current && current->key == key){
-//         return current;
-//     }
-//     return NULL;
-// }
-
-// //insert
-// void insert(skipList* list,int key){
-//     skipListNode* update[MAX_LEVEL-1];
-//     skipListNode* current =list->header;
-
-//     for (int i = list->level; i >= 0; i--)
-//     {
-//         while (current->forward[i] && current->forward[i]->key > key)
-//         {
-//             current=current->forward[i];
-//         }
-//         update[i]=current;
-//     }
-//     current=current->forward[0];
-
-//     if(!current || current->key!=key){
-//         int newLevel= geneateRandomLevel();
-//         if (newLevel > list->level)
-//         {
-//             for (int i = list->level+1; i >=newLevel; i++)
-//             {
-//                 update[i]=list->header;
-//             }
-//             list->level=newLevel;
-//         }
-//         skipListNode *newNode=createNode(key,newLevel);
-
-//         for (int i = 0; i <= newLevel; i++)
-//         {
-//             newNode->forward[i]=update[i]->forward[i];
-//             update[i]->forward[i]=newNode;
-//         }   
-//     }
-// }
-
-// //display
-// void display(skipList* list){
-//     printf("--------------Skip List-------------");
-//     for (int i = list->level; i >=0; i--)
-//     {
-//         skipList* node=list->header->forward[i];
-//         printf("level %d: ",i);
-//         while (node)
-//         {
-//             printf("%d ", node->key);
-//             node = node->forward[i];
-//         }
-//         printf("\n");
-//     }
-    
-// }
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
 
 #define MAX_LEVEL 6
 #define P_FACTOR 0.5
 
-typedef struct skipListNode {
+typedef struct SkipListNode {
     int key;
-    struct skipListNode **forward;
-} skipListNode;
+    struct SkipListNode **forward;
+}SkipListNode;
 
-typedef struct skipList {
+typedef struct SkipList {
     int level;
-    skipListNode* header;
-} skipList;
+    SkipListNode *header;
+}SkipList;
 
-// create Node
-skipListNode* createNode(int key, int level) {
-    skipListNode* node = (skipListNode*)malloc(sizeof(skipListNode));
+//createNode
+SkipListNode* createNode(int key, int level)
+{
+    SkipListNode *node = (SkipListNode*)malloc(sizeof(SkipListNode));
     node->key = key;
-    node->forward = (skipListNode**)malloc(sizeof(skipListNode*) * (level + 1));
-    for (int i = 0; i <= level; i++) {
-        node->forward[i] = NULL;
+
+    node->forward = (SkipListNode**)malloc(sizeof(SkipListNode*) * (level + 1));
+
+    for (int iterator = 0; iterator <= level; iterator++)
+    {
+        node->forward[iterator] = NULL;
     }
+
     return node;
 }
 
-// create list
-skipList* createSkipList() {
-    skipList* list = (skipList*)malloc(sizeof(skipList));
-    list->level = 0;
-    list->header = createNode(-1, MAX_LEVEL); // dummy key -1
+//createSkipList
+SkipList* createSkipList()
+{
+    SkipList *list = (SkipList*)malloc(sizeof(SkipList));
+
+    list->level=0;
+    list->header = createNode(-1, MAX_LEVEL);
+
     return list;
 }
 
-// generate Random level
-int generateRandomLevel() {
+//random
+int generateRandomLevel()
+{
     int level = 0;
-    while (((double)rand() / RAND_MAX) < P_FACTOR && level < MAX_LEVEL) {
+
+    while((rand()/(double)RAND_MAX) < P_FACTOR && level < MAX_LEVEL)
+    {
         level++;
     }
+
     return level;
 }
 
-// search
-skipListNode* search(skipList* list, int key) {
-    skipListNode* current = list->header;
-    for (int i = list->level; i >= 0; i--) {
-        while (current->forward[i] && current->forward[i]->key < key) {
-            current = current->forward[i];
+//search
+SkipListNode* search(SkipList *list, int key)
+{
+    SkipListNode *current = list->header;
+
+    for(int iterator = list->level; iterator>=0; iterator--)
+    {
+        while(current->forward[iterator] && current->forward[iterator]->key < key)
+        {
+            current = current->forward[iterator];
         }
     }
+
     current = current->forward[0];
-    if (current && current->key == key) {
+
+    if(current && current->key == key)
+    {
         return current;
     }
+
     return NULL;
 }
 
-// insert
-void insert(skipList* list, int key) {
-    skipListNode* update[MAX_LEVEL + 1];
-    skipListNode* current = list->header;
+//insert
+void insert(SkipList* list, int key)
+{
+    SkipListNode *update[MAX_LEVEL+1];
+    SkipListNode *current = list->header;
 
-    for (int i = list->level; i >= 0; i--) {
-        while (current->forward[i] && current->forward[i]->key < key) {
-            current = current->forward[i];
+    for (int iterator = list->level; iterator >= 0; iterator--)
+    {
+        while(current->forward[iterator] && current->forward[iterator]->key < key)
+        {
+            current = current->forward[iterator];
         }
-        update[i] = current;
+        update[iterator] = current;
     }
+
     current = current->forward[0];
 
-    if (!current || current->key != key) {
+    if(!current || current->key != key)
+    {
         int newLevel = generateRandomLevel();
-        if (newLevel > list->level) {
-            for (int i = list->level + 1; i <= newLevel; i++) {
-                update[i] = list->header;
+
+        if(newLevel > list->level)
+        {
+            for(int iterator = list->level; iterator <= newLevel; iterator++)
+            {
+                update[iterator] = list->header;
             }
             list->level = newLevel;
         }
-        skipListNode *newNode = createNode(key, newLevel);
-        for (int i = 0; i <= newLevel; i++) {
-            newNode->forward[i] = update[i]->forward[i];
-            update[i]->forward[i] = newNode;
+
+        SkipListNode *newNode = createNode(key, newLevel);
+
+        for(int iterator = 0; iterator <= newLevel; iterator++)
+        {
+            newNode->forward[iterator] = update[iterator]->forward[iterator];
+            update[iterator]->forward[iterator] = newNode;
         }
     }
 }
 
-//Delete node
-void delete(skipList* list, int key){
-    skipListNode* update[MAX_LEVEL+1];
-    skipListNode* current=list->header;
+//delete
+void delete(SkipList *list, int key)
+{
+    SkipListNode *update[MAX_LEVEL + 1];
+    SkipListNode *current = list->header;
 
-    for (int i = list->level; i >= 0; i--) {
-        while (current->forward[i] && current->forward[i]->key < key) {
-            current = current->forward[i];
+    for (int iterator = list->level; iterator >= 0; iterator--)
+    {
+        while(current->forward[iterator] && current->forward[iterator]->key < key)
+        {
+            current = current->forward[iterator];
         }
-        update[i] = current;
+        update[iterator] = current;
     }
-    // Step 2: Move to possible target node
+
     current = current->forward[0];
 
-    // Step 3: If found, adjust pointers and delete
-    if (current && current->key==key)
+    if (current && current->key == key)
     {
-        for (int  i = 0; i <= list->level; i++)
-        {
-            if (current!=update[i]->forward[i])
-            {
-                break;  // stop once this level no longer points to the node
-            }
-                update[i]->forward[i]=current->forward[i];
-        }
-        free(current);
+       for(int iterator = 0; iterator <= list->level; iterator++)
+       {
+        if(current != update[iterator]->forward[iterator]) break;
+        update[iterator]->forward[iterator] = current->forward[iterator];
+       }
 
-        // Step 4: Reduce list level if top levels are empty
-        while (list->level > 0 && list->header->forward[list->level] == NULL) {
-            list->level--;
-        }
-        
-    } 
+       free(current->forward);
+       free(current);
+
+       while(list->level > 0 && list->header->forward[list->level] == NULL)
+       {
+        list->level--;
+       }
+    }  
 }
 
-// display
-void display(skipList* list) {
-    printf("\n------------- Skip List -------------\n");
-    for (int i = list->level; i >= 0; i--) {
-        skipListNode* node = list->header->forward[i];
-        printf("Level %d: ", i);
-        while (node) {
+//display
+void display(SkipList *list)
+{
+    printf("----------SKIP LIST-----------\n");
+
+    for (int iterator = list->level; iterator >= 0; iterator--)
+    {
+        SkipListNode *node = list->header->forward[iterator];
+        printf("Level %d : \n", iterator);
+
+        while (node)
+        {
             printf("%d ", node->key);
-            node = node->forward[i];
+            node = node->forward[iterator];
         }
         printf("\n");
     }
 }
 
-int main() {
+int main()
+{
+
     srand(time(NULL));
 
-    skipList* list = createSkipList();
+    SkipList *list = createSkipList();
 
-    insert(list, 3);
-    insert(list, 6);
-    insert(list, 7);
-    insert(list, 9);
-    insert(list, 12);
-    insert(list, 19);
-    insert(list, 17);
-    insert(list, 26);
-    insert(list, 21);
+    insert(list, 10);
+    insert(list, 20);
+    insert(list, 30);
+    insert(list, 40);
     insert(list, 25);
 
     display(list);
 
-    int key = 19;
-    skipListNode* found = search(list, key);
-    if (found) {
-        printf("Found key %d in skip list.\n", key);
-    } else {
-        printf("Key %d not found.\n", key);
-    }
-    
-    delete(list,17);
+    printf("\n Searching for 25 : %s \n", search(list, 25) ? "Found" : "Not Found");
+
+    printf("\n Searching for 28 : %s \n", search(list, 28) ? "Found" : "Not Found");
+
+    printf("\n Deleting for 25..\n");
+
+    delete(list, 25);
+
     display(list);
+
+    printf("\n Searching for 25 : %s \n", search(list, 25) ? "Found" : "Not Found");
 
     return 0;
 }
