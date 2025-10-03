@@ -1,45 +1,44 @@
-//receiver_chat.c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
-#include <unistd.h>
-
-#define MSG_KEY 1234
-
-struct msg_buffer {
-    long msg_type;
-    char sender[20];
-    char text[100];
-};
+#include "msg_common.h"
 
 int main() {
-    int msgid = msgget(MSG_KEY, 0666 | IPC_CREAT);
-    if (msgid == -1) {
+    key_t key;
+    int msgid;
+    struct msg_buffer msg;
+
+    key = ftok("chatfile", 65);
+
+    msgid = msgget(key, 0666 | IPC_CREAT);
+    if (msgid < 0) {
         perror("msgget");
         exit(1);
     }
 
-    struct msg_buffer message;
+    printf("User2 ready. Type messages (type 'exit' to quit):\n");
 
-    printf("Listening for messages...\n");
-    while (1) {
-        if (msgrcv(msgid, &message, sizeof(message) - sizeof(long), 0, 0) == -1) {
-            perror("msgrcv");
-            exit(1);
+    if (fork() == 0) {
+        // Child → Receiver
+        while (1) {
+            msgrcv(msgid, &msg, sizeof(msg.mtext), 1, 0); // listen for User1
+            if (strncmp(msg.mtext, "exit", 4) == 0) {
+                printf("User1 exited. Closing chat.\n");
+                break;
+            }
+            printf("User1: %s\n", msg.mtext);
         }
+        exit(0);
+    } else {
+        // Parent → Sender
+        while (1) {
+            fgets(msg.mtext, MAX_SIZE, stdin);
+            msg.mtext[strcspn(msg.mtext, "\n")] = '\0';
+            msg.mtype = 2; // User2 → User1
+            msgsnd(msgid, &msg, sizeof(msg.mtext), 0);
 
-        // Check for exit signal
-        if (strcmp(message.text, "__EXIT__") == 0) {
-            printf("[System]: %s has left the chat.\n", message.sender);
-            break;
+            if (strncmp(msg.mtext, "exit", 4) == 0) {
+                break;
+            }
         }
-
-        printf("[%s]: %s\n", message.sender, message.text);
     }
 
-    // Cleanup
-    msgctl(msgid, IPC_RMID, NULL);
     return 0;
 }
