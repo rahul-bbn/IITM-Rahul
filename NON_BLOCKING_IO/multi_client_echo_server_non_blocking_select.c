@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <errno.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>
-#include <netinet/in.h>
-#include <errno.h>
+#include <arpa/inet.h>
+
 
 #define PORT 8080
 #define MAX_CLIENTS FD_SETSIZE
