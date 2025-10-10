@@ -14,11 +14,6 @@
 #define MAX_CLIENTS FD_SETSIZE
 #define BUFFER_SIZE 1024
 
-void set_nonblocking(int fd)
-{
-    
-}
-
 int main()
 {
     int server_fd, new_socket, client_socket[MAX_CLIENTS];
