@@ -23,13 +23,13 @@ int main() {
     if (client_socket < 0)
         error_exit("socket failed");
     
-    // Set SO_REUSEADDR to reuse the port quickly
-    int opt = 1;
-    if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
-    {
-        perror("setsockopt");
-        exit(EXIT_FAILURE);
-    }
+    // // Set SO_REUSEADDR to reuse the port quickly
+    // int opt = 1;
+    // if (setsockopt(client_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
+    // {
+    //     perror("setsockopt");
+    //     exit(EXIT_FAILURE);
+    // }
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
