@@ -12,7 +12,17 @@ int main(int argc, char *argv[]) {
     }
 
     pid_t pid = atoi(argv[1]);
-    int sig = atoi(argv[2]);
+    int sig_input = atoi(argv[2]);
+    int sig;
+
+    // Map 1,2,9 to actual signals
+    if (sig_input == 1) sig = SIGUSR1;
+    else if (sig_input == 2) sig = SIGUSR2;
+    else if (sig_input == 9) sig = SIGTERM;
+    else {
+        fprintf(stderr, "Invalid signal number!\n");
+        exit(1);
+    }
 
     if (kill(pid, sig) == -1) {
         perror("kill");
