@@ -21,7 +21,7 @@ int main(){
 
         if (nbytes<=0)
         {
-            write(1,"\n",1);
+            printf("\n");
             break;
         }
 
@@ -51,7 +51,7 @@ int main(){
             }
             exit(EXIT_FAILURE);
         } else {
-            wait(NULL);
+            wait(NULL);    //NULL means the parent won't collect child's exit status
         }
     }
 
