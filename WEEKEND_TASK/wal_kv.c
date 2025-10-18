@@ -24,7 +24,7 @@ char *currentTimestamp()
 void writeToWal(char *operation, char *key, char *val)
 {
     FILE *wal = fopen(WAL_FILE, "a");
-    if (wal < 0)
+    if (wal==NULL)
     {
         perror("failed to open wal!");
         exit(1);
@@ -36,7 +36,7 @@ void writeToWal(char *operation, char *key, char *val)
 void applyToDB(char *operation, char *key, char *val)
 {
     FILE *DB = fopen(DB_FILE, "a");
-    if (DB < 0)
+    if (DB == NULL)
     {
         perror("failed to open DB!");
         exit(1);
