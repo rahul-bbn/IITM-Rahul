@@ -1,3 +1,6 @@
+/*Implement a C program that scans a directory and counts the
+number of files of each extension type. Print the count for .txt,
+.c, .log, etc*/
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
