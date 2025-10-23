@@ -63,7 +63,7 @@ gcc uds_kv_client_perf_top.c -o uds_kv_client_perf_top
 ./uds_kv_client_perf_top  # Terminal 2
 
 ### 4. Profile the server/client with `perf`
-sudo perf stat -e syscalls:sys_enter_read,syscalls:sys_enter_write,syscalls:sys_enter_accept ./uds_kv_server_perf_top
+sudo perf stat -e syscalls:sys_enter_read,syscalls:sys_enter_write,syscalls:sys_enter_accept ./uds_kv_server_perf_top  
 sudo perf stat -e syscalls:sys_enter_read,syscalls:sys_enter_write,syscalls:sys_enter_accept ./uds_kv_client_perf_top
 
 ### 5. (Optional) View server PID manually
