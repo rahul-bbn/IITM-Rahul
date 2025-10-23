@@ -69,9 +69,9 @@ sudo perf stat -e syscalls:sys_enter_read,syscalls:sys_enter_write,syscalls:sys_
 ### 5. (Optional) View server PID manually
 ps aux | grep uds_kv_server_perf_top
 
-### 6. Capture screenshot (if in WSL, use Windows + Shift + S)
-# Linux GUI users:
-Linux GUI: PrtScn or gnome-screenshot -a
+### 6. Capture screenshot 
+# WSL: Windows + Shift + S
+# Linux GUI users: PrtScn or gnome-screenshot -a
 
 ## Notes
 
