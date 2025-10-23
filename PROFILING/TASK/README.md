@@ -70,8 +70,8 @@ sudo perf stat -e syscalls:sys_enter_read,syscalls:sys_enter_write,syscalls:sys_
 ps aux | grep uds_kv_server_perf_top
 
 ### 6. Capture screenshot 
-# WSL: Windows + Shift + S
-# Linux GUI users: PrtScn or gnome-screenshot -a
+* WSL: Windows + Shift + S
+* Linux GUI users: PrtScn or gnome-screenshot -a
 
 ## Notes
 
