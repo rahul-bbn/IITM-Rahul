@@ -59,7 +59,7 @@ gcc uds_kv_client_perf_top.c -o uds_kv_client_perf_top
 ./uds_kv_server_perf_top
 
 ### 3. Run multiple clients manually
-./uds_kv_client_perf_top  # Terminal 1
+./uds_kv_client_perf_top  # Terminal 1<br>
 ./uds_kv_client_perf_top  # Terminal 2
 
 ### 4. Profile the server/client with `perf`
