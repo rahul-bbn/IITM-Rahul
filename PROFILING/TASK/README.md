@@ -52,7 +52,7 @@
 
 ### 1. Compile the server/client
 
-gcc uds_kv_server_perf_top.c -o uds_kv_server_perf_top
+gcc uds_kv_server_perf_top.c -o uds_kv_server_perf_top  
 gcc uds_kv_client_perf_top.c -o uds_kv_client_perf_top
 
 ### 2. Run the server
