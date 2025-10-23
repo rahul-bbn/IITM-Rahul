@@ -64,12 +64,6 @@ ps aux | grep uds_kv_server_perf_top
 # Linux GUI users:
 Linux GUI: PrtScn or gnome-screenshot -a
 
-## Screenshot
-
-![Performance Screenshot](performance_screenshot.png)
-
-*Replace this image with your actual screenshot showing server interaction and perf stats.*
-
 ## Notes
 
 * This report **excludes server/client code**.
