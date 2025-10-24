@@ -1,0 +1,4 @@
+INSERT user1 Rahul
+INSERT user2 Kanha
+UPDATE user1 Gaurav_update
+DELETE user2 NULL
