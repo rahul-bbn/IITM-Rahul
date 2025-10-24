@@ -70,11 +70,11 @@ sudo -i -u postgres
 psql
 
 ### 5. Run SQL commands
-CREATE TABLE numbers(id SERIAL PRIMARY KEY, value INT);
-INSERT INTO numbers(value) VALUES(10), (20), (30);
-SELECT * FROM numbers;
-SELECT 7+1;
-SELECT 7+1 AS sum;
+* CREATE TABLE numbers(id SERIAL PRIMARY KEY, value INT);
+* INSERT INTO numbers(value) VALUES(10), (20), (30);
+* SELECT * FROM numbers;
+* SELECT 7+1;
+* SELECT 7+1 AS sum;
 
 ---
 
