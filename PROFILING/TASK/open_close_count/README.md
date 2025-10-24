@@ -37,36 +37,32 @@ The tracing was done using bpftrace for around 40 seconds.
 * Normal daemons like systemd, apt, and logrotate regularly open and close files.
 * No issue — expected behavior.
 
-### 2. Shell Commands
-
-* Commands run in bash or sh open libraries and executables.
-* Normal usage — nothing to fix.
-
-### 3. PostgreSQL Database
+### 2. PostgreSQL Database
 
 * Database processes showed balanced open/close calls.
 * File handling is healthy — no descriptor leaks.
 
-### 4. Tracing Tool (bpftrace)
+### 3. Tracing Tool (bpftrace)
 
 * The tool adds a few syscalls while running.
 * Impact is very small.
 
 ---
 
-## Step-by-Step Commands
+## Commands used:
 
 Follow these steps to trace and test PostgreSQL file activity:
 
-```bash
-# 1. Start PostgreSQL
-sudo systemctl start postgresql
+# Main file Commands:
 
 # 2. Start tracing open/close system calls
 sudo bpftrace -e '
 tracepoint:syscalls:sys_enter_openat  { @[comm, pid, "open"]  = count(); }
 tracepoint:syscalls:sys_enter_close   { @[comm, pid, "close"] = count(); }
 '
+# PostgreSQL Commands:
+# 1. Start PostgreSQL
+sudo systemctl start postgresql
 
 # 3. Switch to postgres user
 sudo -i -u postgres
@@ -80,7 +76,6 @@ INSERT INTO numbers(value) VALUES(10), (20), (30);
 SELECT * FROM numbers;
 SELECT 7+1;
 SELECT 7+1 AS sum;
-```
 
 ---
 
