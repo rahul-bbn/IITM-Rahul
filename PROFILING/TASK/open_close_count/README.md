@@ -3,13 +3,12 @@
 ## Overview
 
 This report explains how file open and close system calls (openat and close) work on a Linux system and how PostgreSQL uses them during database operations.
-The tracing was done using bpftrace for around 40 seconds.
+The tracing was done using bpftrace.
 
 ---
 
 ## Summary
 
-* Trace Duration: 40 seconds
 * Syscalls Recorded:
 
   * openat: 14 times
@@ -49,28 +48,28 @@ The tracing was done using bpftrace for around 40 seconds.
 
 ---
 
-## Commands used:
+# Commands used:
 
 Follow these steps to trace and test PostgreSQL file activity:
 
-# Main file Commands:
+## Main file Commands:
 
-# 2. Start tracing open/close system calls
+### 1. Start tracing open/close system calls
 sudo bpftrace -e '
 tracepoint:syscalls:sys_enter_openat  { @[comm, pid, "open"]  = count(); }
 tracepoint:syscalls:sys_enter_close   { @[comm, pid, "close"] = count(); }
 '
-# PostgreSQL Commands:
-# 1. Start PostgreSQL
+## PostgreSQL Commands:
+### 2. Start PostgreSQL
 sudo systemctl start postgresql
 
-# 3. Switch to postgres user
+### 3. Switch to postgres user
 sudo -i -u postgres
 
-# 4. Open PostgreSQL shell
+### 4. Open PostgreSQL shell
 psql
 
-# 5. Run SQL commands
+### 5. Run SQL commands
 CREATE TABLE numbers(id SERIAL PRIMARY KEY, value INT);
 INSERT INTO numbers(value) VALUES(10), (20), (30);
 SELECT * FROM numbers;
@@ -94,5 +93,5 @@ SELECT 7+1 AS sum;
 * No performance or file descriptor issues found.
 * bpftrace tracing overhead is very low.
 
-# Conclusion:
+### Conclusion:
 System and database are stable, efficient, and working as expected.
