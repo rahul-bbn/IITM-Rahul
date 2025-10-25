@@ -25,14 +25,13 @@ void withdraw(int amount,int thread_id){
     {
         balance=balance-amount;
         printf("Thread %d: Withdrawn %d | New Balance: %d\n",thread_id,amount,balance);
-    } else
-    {
+    } else{
         printf("Thread %d: Withdrawal of %d failed (Insufficient balance)\n",thread_id,amount);
     }
     pthread_mutex_unlock(&balance_mutex);
 }
 
-void* transactions(void* arg) {
+void* transactions(void* arg){
     int thread_id = *((int*)arg);
 
     for (int i = 0; i < TRANSACTIONS; i++)
