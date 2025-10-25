@@ -1,5 +1,7 @@
 /*
-Write a C program that simulates a bank account with multiple threads performing deposits and withdrawals. Ensure correct balance updates using mutex synchronization. Print all transactions and final balance. Save as multi_thread_bank.c.
+Write a C program that simulates a bank account with multiple threads performing deposits and withdrawals.
+Ensure correct balance updates using mutex synchronization.
+Print all transactions and final balance. Save as multi_thread_bank.c.
 */
 #include<stdio.h>
 #include<unistd.h>
