@@ -30,7 +30,7 @@ int evaluation(struct Node* root){
     int leftval=evaluation(root->left);
     int rightval=evaluation(root->right);
 
-    //arithmetic operations
+    //arithmetic
     if (strcmp(root->data,"+")==0)
     {
         return leftval+rightval;
@@ -54,7 +54,7 @@ int evaluation(struct Node* root){
         
     }
 
-    //comparision operations
+    //comparision
     if (strcmp(root->data,">")==0)
     {
         return leftval>rightval;
@@ -80,7 +80,7 @@ int evaluation(struct Node* root){
         return leftval!=rightval;
     }
     
-    //logical operations
+    //logical
     if (strcmp(root->data,"AND")==0)
     {
         return leftval && rightval;
