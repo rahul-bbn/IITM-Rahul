@@ -39,7 +39,7 @@ void project(struct Student *row){
     printf("%-10s %d\n",row->name,row->age);
 }
 
-int main() {
+int main(){
     struct Student scanRow,filterRow;
     printf("Query: SELECT name, age FROM students WHERE age > 18;\n\n");
     printf("Result:\n");
