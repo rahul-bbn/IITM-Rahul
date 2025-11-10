@@ -4,7 +4,7 @@
 #include <linux/sched.h>
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Pramod");
+MODULE_AUTHOR("Rahul");
 MODULE_DESCRIPTION("Syscall logger using kprobes");
 MODULE_VERSION("2.0");
 
