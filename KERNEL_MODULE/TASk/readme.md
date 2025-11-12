@@ -32,7 +32,7 @@ Linux_kernel_module/
 
 1. **Open terminal and navigate to the module directory**
    ```bash
-   cd ~/C_Programs/Linux_kernel_module
+   cd /Linux_kernel_module
    ```
 
 2. **Build the kernel module**
