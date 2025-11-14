@@ -1,0 +1,1 @@
+/*Write a C program that simulates a university student enrollment system using AVL Trees. Insert student records (RollNo + Name), support search by RollNo, and allow deletion when a student drops a course. Ensure the tree stays balanced after each operation using AVL rotations. Print all enrollment/drop events and the final sorted student list.*/
